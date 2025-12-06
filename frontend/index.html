@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Shop Frontend</title>
+</head>
+<body>
+  <h1>Shop Frontend</h1>
+  <button id="load">Load items</button>
+  <pre id="output"></pre>
+
+  <script>
+    document.getElementById('load').addEventListener('click', async () => {
+      try {
+        const res = await fetch('/items');
+        const data = await res.json();
+        document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('output').textContent = 'Error: ' + err;
+      }
+    });
+  </script>
+</body>
+</html>
