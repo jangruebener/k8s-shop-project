@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shop-frontend
+  template:
+    metadata:
+      labels:
+        app: shop-frontend
+    spec:
+      containers:
+        - name: shop-frontend
+          image: ghcr.io/jangruebener/k8s-shop-frontend:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shop-frontend-service
+spec:
+  type: Loadbalancer
+  selector:
+    app: shop-frontend
+  ports:
+    - ports: 80
+      targetPort: 80
