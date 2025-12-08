@@ -12,6 +12,8 @@ spec:
       labels:
         app: shop-backend
     spec:
+      imagePullSecrets:
+        - name: ghcr-auth
       containers:
         - name: shop-backend
           image: ghcr.io/jangruebener/k8s-shop-backend:latest

@@ -12,6 +12,8 @@ spec:
       labels:
         app: shop-frontend
     spec:
+      imagePullSecrets:
+        - name: ghcr-auth
       containers:
         - name: shop-frontend
           image: ghcr.io/jangruebener/k8s-shop-frontend:latest
@@ -23,9 +25,9 @@ kind: Service
 metadata:
   name: shop-frontend-service
 spec:
-  type: Loadbalancer
+  type: LoadBalancer
   selector:
     app: shop-frontend
   ports:
-    - ports: 80
+    - port: 80
       targetPort: 80
