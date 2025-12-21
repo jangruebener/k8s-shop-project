@@ -32,3 +32,6 @@ Thumbs.db
 # Build output (falls später relevant)
 dist/
 build/
+
+# custom
+secret.txt

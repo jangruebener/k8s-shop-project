@@ -19,7 +19,7 @@ app.get('/health', (req, res) => {
 app.get('/items', async (req, res) => {
     try {
         const conn = await mysql.createConnection(dbConfig);
-        comst [rows] = await conn.query('SELECT 1 AS test');
+        const [rows] = await conn.query('SELECT 1 AS test');
         await conn.end();
         res.json(rows);
     } catch (err) {
