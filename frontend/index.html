@@ -12,7 +12,7 @@
   <script>
     document.getElementById('load').addEventListener('click', async () => {
       try {
-        const res = await fetch('/items');
+        const res = await fetch('http://shop-backend-service.default.svc.cluster.local/items');
         const data = await res.json();
         document.getElementById('output').textContent = JSON.stringify(data, null, 2);
       } catch (err) {
