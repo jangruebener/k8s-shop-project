@@ -34,14 +34,13 @@
   </section>
 
   <script>
-    const API_BASE = 'http://shop-backend-service';
 
     async function fetchItems() {
       const container = document.getElementById('items-container');
       container.textContent = 'Lade Produkte...';
 
       try {
-        const res = await fetch(`${API_BASE}/items`);
+        const res = await fetch(`/items`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const items = await res.json();
 
@@ -100,7 +99,7 @@
       }
 
       try {
-        const res = await fetch(`${API_BASE}/items`, {
+        const res = await fetch(`/items`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, price, description })
