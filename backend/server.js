@@ -25,9 +25,8 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
-app.get('/health', async (req, res) => {
+app.get('api/health', async (req, res) => {
   try {
-    // Optional: einfache DB-Abfrage, um DB-Erreichbarkeit zu prüfen
     await pool.query('SELECT 1');
     res.status(200).json({
       status: 'ok',
@@ -44,7 +43,7 @@ app.get('/health', async (req, res) => {
   }
 });
 
-app.get('/items', async (req, res) => {
+app.get('api/items', async (req, res) => {
   try {
     const [rows] = await pool.query(
       'SELECT id, name, price, description, created_at FROM products'
@@ -58,7 +57,7 @@ app.get('/items', async (req, res) => {
   }
 });
 
-app.post('/items', async (req, res) => {
+app.post('api/items', async (req, res) => {
   const { name, price, description } = req.body;
 
   if (!name || typeof price !== 'number') {
