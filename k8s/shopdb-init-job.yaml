@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: shopdb-init-job
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: mysql-client
+          image: mysql:8.0
+          command: ["sh", "-c"]
+          args:
+            - |
+              echo "Waiting for MySQL...";
+              until mysqladmin ping -h shop-database-service -p"$MYSQL_ROOT_PASSWORD" --silent; do
+                sleep 3;
+              done;
+              echo "MySQL is up. Applying init script...";
+              mysql -h shop-database-service -p"$MYSQL_ROOT_PASSWORD" < /init/shopdb-init.sql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-root-password
+          volumeMounts:
+            - name: init-sql
+              mountPath: /init
+      volumes:
+        - name: init-sql
+          configMap:
+            name: shopdb-init-sql
+            items:
+              - key: shopdb-init.sql
+                path: shopdb-init.sql

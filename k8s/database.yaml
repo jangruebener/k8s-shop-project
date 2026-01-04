@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: shop-mysql
+  name: shop-mysql-statefulset
 spec:
   serviceName: shop-database-service
   replicas: 1
@@ -32,14 +32,22 @@ spec:
           volumeMounts:
             - name: mysql-data
               mountPath: /var/lib/mysql
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1"
+              memory: "512Mi"
   volumeClaimTemplates:
     - metadata:
         name: mysql-data
       spec:
         accessModes: [ "ReadWriteOnce" ]
+        storageClassName: gp3
         resources:
           requests:
-            storage: 1Gi
+            storage: 512Mi
 ---
 apiVersion: v1
 kind: Service

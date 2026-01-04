@@ -1,0 +1,31 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: shop-cluster
+  region: eu-central-1
+  version: "1.34"
+
+addons:
+  - name: aws-ebs-csi-driver
+    version: v1.54.0
+
+iam:
+  withOIDC: true
+
+managedNodeGroups:
+  - name: workers
+    instanceType: t3.small
+    minSize: 2
+    maxSize: 4
+    desiredCapacity: 2
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/shop-cluster: "owned"
+    volumeType: gp3
+    iam:
+      withAddonPolicies:
+        ebs: true
+    amiFamily: AmazonLinux2023
+    ssh:
+      allow: false
