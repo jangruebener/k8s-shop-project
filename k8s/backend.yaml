@@ -3,7 +3,12 @@ kind: Deployment
 metadata:
   name: shop-backend-deployment
 spec:
-  replicas: 1
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app: shop-backend
@@ -12,11 +17,16 @@ spec:
       labels:
         app: shop-backend
     spec:
+      terminationGracePeriodSeconds: 40
       imagePullSecrets:
         - name: ghcr-auth
       containers:
         - name: shop-backend
           image: ghcr.io/jangruebener/k8s-shop-backend:latest
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sh", "-c", "sleep 10"]
           env:
           - name: DB_HOST
             value: "shop-database-service"

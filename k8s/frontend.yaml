@@ -3,7 +3,12 @@ kind: Deployment
 metadata:
   name: shop-frontend-deployment
 spec:
-  replicas: 1
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app: shop-frontend
@@ -12,11 +17,16 @@ spec:
       labels:
         app: shop-frontend
     spec:
+      terminationGracePeriodSeconds: 40
       imagePullSecrets:
         - name: ghcr-auth
       containers:
         - name: shop-frontend
           image: ghcr.io/jangruebener/k8s-shop-frontend:latest
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sh", "-c", "sleep 10"]
           ports:
             - containerPort: 80
           livenessProbe:
