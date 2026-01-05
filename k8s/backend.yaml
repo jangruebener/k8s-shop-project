@@ -18,8 +18,6 @@ spec:
         app: shop-backend
     spec:
       terminationGracePeriodSeconds: 40
-      imagePullSecrets:
-        - name: ghcr-auth
       containers:
         - name: shop-backend
           image: ghcr.io/jangruebener/k8s-shop-backend:latest
